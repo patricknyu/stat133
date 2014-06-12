@@ -1,5 +1,5 @@
 name = "Patrick Yu"
 SID = "23044344"
-email = "patrickyuemail@gmail.com"
+email = "patrick.n.yu@berkeley.edu"
 github_name = "patricknyu"
 status = "enrolled"
