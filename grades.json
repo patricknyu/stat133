@@ -1,0 +1,17 @@
+{
+    "email": "patrick.n.yu@berkeley.edu", 
+    "github_name": "patricknyu", 
+    "grades": {
+        "lab2": {
+            "earned": 10, 
+            "hash": "fc9a83435279c9b864cb808f6dc5f941839db07a", 
+            "note": "", 
+            "penalty": 0, 
+            "possible": 10
+        }
+    }, 
+    "login": "patricknyu", 
+    "name": "Patrick Yu", 
+    "status": "enrolled", 
+    "url": "git@github.com:patricknyu/stat133.git"
+}
