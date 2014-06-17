@@ -10,5 +10,5 @@ Patrick Yu
 
 + Hopefully this works
 
-[link](https://www.google.com)
+[link->google](https://www.google.com)
 
