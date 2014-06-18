@@ -5,12 +5,25 @@
 
 mySD <- function(x) {
     ## Take in a vector of numbers and return its standard deviation.
-    "NotImplemented"
+    ##m = myMean(x)
+    ##squareddifferences = 0
+    ##for (i in x){
+	##x[i] = (x[i]-m)^2}
+    ##return(sqrt(sum(x)/length(x)))
+    return(sqrt(var(x)))
+    ##m = myMean(x)
+    ##x = (x - m)^2
+    ##return(sqrt(sum(x)/length(x)))
 }
 
 myMean <- function(x) {
     ## Take in a vector of numbers and return its mean.
-    "NotImplemented"
+    ## return(sum(x)/length(x))
+    x.sum = 0
+    x.length = length(x)
+    for (i in x){
+	x.sum = x.sum + x[i]}
+    return(x.sum/x.length)
 }
 
 ## tests
