@@ -42,7 +42,7 @@ toCelcius <- function(temp.far) {
     # <temp.far> and return the values of each entry in Celcius
 
     #your code here
-
+    return((temp.far-32)*5/9)
 }
 
 
@@ -71,10 +71,12 @@ calculateS <- function(data, selected.year, selected.day) {
                                                          selected.day > 31))
         stop('invalid date')
     
-    #your code here
-    
+    #your code here	
+    for (i in c(1:nrow(data))){
+	if (data$year[i] == selected.year && data$day[i] == selected.day){
+	   return((data$max[i]-data$min[i])/data$mean[i])}
 }
-
+}
 
 tryCatch(
     checkEquals(calculateS(temperature.data, 2009, 28), 0.4807155,
@@ -96,10 +98,10 @@ tryCatch(
 #spread and the day on which it occured.  Store these as the variables:
 #<subset.2010>, <temp.differences>, <max.difference>, and <max.difference.day>.
 
-#subset.2010 <- #your code here
-#temp.differences <- #your code here
-#max.differences <- #your code here
-#max.differences.day <- #your code here
+subset.2010 <- temperature.data[temperature.data$year == 2010,c(1:5)]
+temp.differences <- temperature.data$max - temperature.data$min 
+max.differences <- max(temp.differences) 
+max.differences.day <- temperature.data$day[which.max(max.differences)] 
 
 
 # --------------------------------------------------------------
@@ -109,10 +111,16 @@ tryCatch(
 # high temperatures greater than the 65th percentile (2)days with daily high
 # temperatures below the 65th percentile. Use strict inequalities when
 # determining these subsets
-    
-#your code here
-#mean.low.above <- #your code here
-#mean.low.below <- #your code here
+up <- vector()
+down <- vector()
+for (i in c(1:nrow(temperature.data))){
+   if (sort(temperature.data$max)[i]>=quantile(sort(temperature.data$max),.65)){
+	up <- c(up,sort(temperature.data$min)[i])}
+   else{
+	down <- c(down,sort(temperature.data$min)[i])}
+}
+mean.low.above = mean(up) 
+mean.low.below = mean(down)
 
 # --------------------------------------------------------------
 # Problem 3
@@ -126,13 +134,13 @@ tryCatch(
 # <observed.types> respectively.
 
 #your code here
-#observed.diets <- #your code here
-#observed.types <- #your code here
-
+observed.diets <- animal.key$diet[match(observed.animals,animal.key$animal)]
+observed.types <- animal.key$type[match(observed.animals,animal.key$animal)]
+x = table(observed.diets)
+n.carnivore.mammals = x[names(x) == "carnivore"] 
 # Use your newly created vectors to calculate the total number of observed
 # animals that are both carnivores and mammals.  Store this variable as
 # <carnivore.mammals>
 
-#n.carnivore.mammals <- #your code here
 
     
