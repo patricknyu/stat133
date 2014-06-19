@@ -72,10 +72,12 @@ calculateS <- function(data, selected.year, selected.day) {
         stop('invalid date')
     
     #your code here	
-    for (i in c(1:nrow(data))){
-	if (data$year[i] == selected.year && data$day[i] == selected.day){
-	   return((data$max[i]-data$min[i])/data$mean[i])}
-}
+#    for (i in c(1:nrow(data))){
+#	if (data$year[i] == selected.year && data$day[i] == selected.day){
+#	   return((data$max[i]-data$min[i])/data$mean[i])}
+    x = data[data$day == selected.day & data$year == selected.year, ]
+    return((x$max-x$min)/x$mean)
+#}
 }
 
 tryCatch(
@@ -111,16 +113,23 @@ max.differences.day <- temperature.data$day[which.max(max.differences)]
 # high temperatures greater than the 65th percentile (2)days with daily high
 # temperatures below the 65th percentile. Use strict inequalities when
 # determining these subsets
-up <- vector()
-down <- vector()
-for (i in c(1:nrow(temperature.data))){
-   if (sort(temperature.data$max)[i]>=quantile(sort(temperature.data$max),.65)){
-	up <- c(up,sort(temperature.data$min)[i])}
-   else{
-	down <- c(down,sort(temperature.data$min)[i])}
-}
-mean.low.above = mean(up) 
+#up <- vector()
+#down <- vector()
+#for (i in c(1:nrow(temperature.data))){
+#   if (sort(temperature.data$max)[i]>=quantile(sort(temperature.data$max),.65)){
+#	up <- c(up,sort(temperature.data$min)[i])}
+#   else{
+#	down <- c(down,sort(temperature.data$min)[i])}
+#}
+#mean.low.above = mean(up) 
+#mean.low.below = mean(down)
+
+down <-sort(temperature.data$min[temperature.data$max < quantile(temperature.data$max,.65)])
+up <-sort(temperature.data$min[temperature.data$max > quantile(temperature.data$max,.65)])
+mean.low.above = mean(up)
 mean.low.below = mean(down)
+
+
 
 # --------------------------------------------------------------
 # Problem 3
