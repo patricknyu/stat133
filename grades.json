@@ -2,6 +2,13 @@
     "email": "patrick.n.yu@berkeley.edu", 
     "github_name": "patricknyu", 
     "grades": {
+        "assignment-1": {
+            "earned": 24, 
+            "hash": "50187e48e0d23f9f6c52f684ad1941411d4d0ba9", 
+            "note": "", 
+            "penalty": 0, 
+            "possible": 30
+        }, 
         "lab2": {
             "earned": 10, 
             "hash": "fc9a83435279c9b864cb808f6dc5f941839db07a", 
