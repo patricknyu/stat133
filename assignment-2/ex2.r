@@ -18,11 +18,14 @@ errMsg = function(err) print(paste("ERROR:", err))
 truncate <- function(input.vector, trim) {
 
     stopifnot(0<=trim & trim<=0.5)
-    
-    # your code here
+	if(trim == .5){
+		return(integer(0))
+	}
+    truncated.vector <- input.vector[match(trunc(quantile(input.vector,trim)),input.vector):match(trunc(quantile(input.vector,1-trim)),input.vector)]
+
+	 # your code here
 
 }
-
 tryCatch(checkEquals(c(2, 3, 4), truncate(1:5, trim=0.25)), error=function(err)
          errMsg(err))
 
@@ -48,8 +51,10 @@ tryCatch(checkIdentical(integer(0), truncate(1:6, trim=0.5)),
 
 
 standardNormalize <- function(input.vector) {
-
-    # your code here
+	sn.vector <- (input.vector - mean(input.vector))/sd(input.vector)
+	outlier <- anyDuplicated(input.vector - mean(input.vector) < 3*sd(input.vector)) != 0
+	return(list(sn.vector,outlier))
+	# your code here
 
 }
 

@@ -18,7 +18,7 @@
 
 
 readRemove <- function(file.name, max.na=0, sep=',', header=F) {
-
+     
     # your code here
     
 }
