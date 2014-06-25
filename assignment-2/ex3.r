@@ -102,7 +102,7 @@ superSubset <- function(data, max.height, max.weight, max.age, parity) {
 
 babies.data <- read.csv("babies.csv") 
 mothers.subset <-babies.data[babies.data$age<=30&babies.data$weight <=150&babies.data$height <=65,] 
-subset.diff <-smokeDiff(babies.data)
+subset.diff <-smokeDiff(mothers.subset)
 
 # tests for smokeDiff
 tryCatch(checkEquals(-0.4639051, smokeDiff(babies.data[1:500, ]),
