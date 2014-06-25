@@ -18,7 +18,9 @@
 
 
 readRemove <- function(file.name, max.na=0, sep=',', header=F) {
-     
+	data = read.table(file.name,header,sep)
+	file.data =data[rowSums(is.na(data))<= max.na,]
+	return(file.data)
     # your code here
     
 }
