@@ -1,6 +1,9 @@
 library(RUnit)
 errMsg = function(err) print(paste("ERROR:", err))
-
+###Patrick Yu
+###Stat 133
+###Assignment-2
+###ex-2.r
 
 # Implement the function "truncate", a function that trims a given vector by
 # removing the upper and lower specified quantiles. Your function should take
@@ -18,14 +21,11 @@ errMsg = function(err) print(paste("ERROR:", err))
 truncate <- function(input.vector, trim) {
 
     stopifnot(0<=trim & trim<=0.5)
-	if(trim == .5){
-		return(integer(0))
-	}
-    truncated.vector <- input.vector[match(trunc(quantile(input.vector,trim)),input.vector):match(trunc(quantile(input.vector,1-trim)),input.vector)]
-
-	 # your code here
-
+	lower = input.vector >= quantile(input.vector,trim)
+	upper = input.vector <= quantile(input.vector,1-trim)
+	return(input.vector[lower &upper])
 }
+
 tryCatch(checkEquals(c(2, 3, 4), truncate(1:5, trim=0.25)), error=function(err)
          errMsg(err))
 
@@ -52,7 +52,7 @@ tryCatch(checkIdentical(integer(0), truncate(1:6, trim=0.5)),
 
 standardNormalize <- function(input.vector) {
 	sn.vector <- (input.vector - mean(input.vector))/sd(input.vector)
-	outlier <- anyDuplicated(input.vector - mean(input.vector) < 3*sd(input.vector)) != 0
+	outlier <- any(sn.vector < -3 | sn.vector > 3)	
 	return(list(sn.vector,outlier))
 	# your code here
 

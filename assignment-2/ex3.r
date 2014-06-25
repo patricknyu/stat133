@@ -31,9 +31,9 @@ errMsg <- function(err) print(paste('ERROR:', err))
 # subset.
 
 smokeDiff <- function(data.subset) {
-	normalized.diff <-(mean(data.subset[data.subset$smoke ==1,]$bwt) - mean(data.subset[data.subset$smoke ==0,]$bwt))/sd(data.subset$bwt)
+	normalized.diff <- (mean(data.subset[data.subset$smoke ==1,]$bwt) - mean(data.subset[data.subset$smoke ==0,]$bwt))/sd(data.subset$bwt)
     # your code here
-
+	return(normalized.diff)
 }
 
 
@@ -58,7 +58,7 @@ smokeDiff <- function(data.subset) {
 heavyDiff <- function(data.subset, weight.cutoff) {
 
     # your code here
-	normalized.diff <-(mean(data.subset[data.subset$weight >weight.cutoff,])-mean(data.subset[data.subset$weight <= weight.cutoff,]))/sd(data.subset$bwt)
+	normalized.diff <-(mean(data.subset[data.subset$weight >weight.cutoff,]$bwt)-mean(data.subset[data.subset$weight <= weight.cutoff,]$bwt))/sd(data.subset$bwt)
 	return(normalized.diff)
 }
 
