@@ -16,7 +16,7 @@ load('prostatedata.Rda')
 # As we mentioned, patients with prostate cancer are labeled with a 2. How many of
 # these patients are there?
 
-# n.prostate <- # your code here
+n.prostate <- sum(colnames(prost.data) =="2")
 
 # Suppose we're interested in the mean of the expression levels for each gene,
 # broken down by cancer status. Please create a 2 x 1000 matrix giving the
@@ -26,8 +26,8 @@ load('prostatedata.Rda')
 # gene from the first row averaged over all patients without prostate
 # cancer). Do the same for a trimmed mean with trim parameter of 0.1.
 
-# status.means <- # your code here
-# status.trim.means <- # your code here
+status.means <- matrix(c(rowMeans(prost.data[,colnames(prost.data) =="1"]),rowMeans(prost.data[,colnames(prost.data) =="2"])),nrow=1000,ncol=2,byrow=FALSE)
+#status.trim.means <-
 
 
 # Back to the original dataset. We are interested in looking at the distribution
@@ -36,8 +36,7 @@ load('prostatedata.Rda')
 # cancer should be colored blue while patents with should be colored red. Set
 # the pch parameter to '.'.
 
-# your code here
-
+boxplot(prost.data,col = c(rep("blue",500),rep("red",500)))
 # Suppose we want to remove any gene that has an unusually low expression level
 # across many patients. We'll define "unusually low" as below the quantile
 # determined by <q.cutoff>, and "many patients" with another cutoff
@@ -114,7 +113,10 @@ tryCatch(checkEquals(0.5889667, unname(tConvert(test.data[1, ])),
 # by 2 to get the actual p-value.
 
 pValConverter <- function(data) {
-
+	t.stats <- apply(data,1,tConvert)
+	temp.pvals <- pt(abs(t.stats),100)
+	p.vals <- 2 * (1 - temp.pvals)
+	return(p.vals)
     # your code here
 }
 
@@ -156,8 +158,10 @@ tryCatch(checkEquals(p.val.converter.t, pValConverter(test.data)),
 # discoveries
 
 FDR <- function(data, alpha) {
-
-    # your code here
+	expected.disc <- alpha * nrow(data)
+	n.dis <- sum(pValConverter(data < alpha)
+	fdr <- expected.disc / n.disc
+	return(fdr)
 }
 
 tryCatch(checkEquals(0.1923077, FDR(prost.data[1:500, ], 0.005), tolerance=1e-6),
