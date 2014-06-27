@@ -27,7 +27,7 @@ n.prostate <- sum(colnames(prost.data) =="2")
 # cancer). Do the same for a trimmed mean with trim parameter of 0.1.
 
 status.means <- matrix(c(rowMeans(prost.data[,colnames(prost.data) =="1"]),rowMeans(prost.data[,colnames(prost.data) =="2"])),nrow=1000,ncol=2,byrow=FALSE)
-#status.trim.means <-
+status.trim.means <-
 
 
 # Back to the original dataset. We are interested in looking at the distribution
@@ -61,13 +61,12 @@ boxplot(prost.data,col = c("blue","red")[factor(colnames(prost.data))])
 #   more than <max.low.expr> patients
 
 quantileCutoff <- function(data, q.cutoff, max.low.expr) {
-
+	low.expr.idcs <- which(rowSums(data<quantile(data,q.cutoff))>max.low.expr)
     # your code here
 }
-
+print("test 1, for quantileCutoff")
 tryCatch(checkEquals(quantile.cutoff.t, quantileCutoff(test.data, 0.25, 10)),
          error=function(err) errMsg(err))
-
 # Our question of interest is whether certain genes exhibit different expression
 # levels between patients with cancer and those without. The first thing we'll
 # need to do to answer this is convert the expression levels to
@@ -88,10 +87,18 @@ tryCatch(checkEquals(quantile.cutoff.t, quantileCutoff(test.data, 0.25, 10)),
 # t-test page for independent two sample t-tests with unequal sample sizes)
 
 tConvert <- function(gene) {
-
+	no.cancer <-gene[names(gene) == "1"]
+	yes.cancer <- gene[names(gene) == "2"]
+	n.1 = length(no.cancer)
+	n.2 = length(yes.cancer)
+	s.1 = sd(no.cancer)
+	s.2 = sd(yes.cancer)
+	s.12 = sqrt(((n.1-1)*s.1^2+(n.2-1)*s.2^2)/(n.1+n.2-2))
+	t.stat <- (mean(no.cancer) - mean(yes.cancer))/(s.12 *sqrt(1/n.1 + 1/n.2))
     # your code here
 }
 
+print("test 2, for tConvert")
 tryCatch(checkEquals(0.5889667, unname(tConvert(test.data[1, ])),
                      tolerance=1e-6), error=function(err) errMsg(err))
 
@@ -119,7 +126,7 @@ pValConverter <- function(data) {
 	return(p.vals)
     # your code here
 }
-
+print("test 3, for pValConverter")
 tryCatch(checkEquals(p.val.converter.t, pValConverter(test.data)),
          error=function(err) errMsg(err))
 
@@ -133,8 +140,8 @@ tryCatch(checkEquals(p.val.converter.t, pValConverter(test.data)),
 # "abline" function). This line represents the expected proportion p-values in
 # each bin.
 
-# your code here
-
+hist(prost.data,breaks = seq(from = 0, to = 1, by = .05),freq = FALSE,main = "Prostate Data p-values",xlab = "p-values")
+abline(a = 1, b = 0)
 
 # You should notice that your histogram contains a spike for the lowest
 # p-values. Some of these represent discoveries (i.e. genes whose expression
@@ -159,11 +166,10 @@ tryCatch(checkEquals(p.val.converter.t, pValConverter(test.data)),
 
 FDR <- function(data, alpha) {
 	expected.disc <- alpha * nrow(data)
-	n.disc <- sum(pValConverter(data < alpha)
+	n.disc <- sum(pValConverter(data)<alpha)
 	fdr <- expected.disc / n.disc
 	return(fdr)
 }
-
+print("test 4, for FDR")
 tryCatch(checkEquals(0.1923077, FDR(prost.data[1:500, ], 0.005), tolerance=1e-6),
          error=function(err) errMsg(err)) 
-    
