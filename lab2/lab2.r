@@ -36,7 +36,7 @@ status.means <- matrix(c(rowMeans(prost.data[,colnames(prost.data) =="1"]),rowMe
 # cancer should be colored blue while patents with should be colored red. Set
 # the pch parameter to '.'.
 
-boxplot(prost.data,col = c(rep("blue",500),rep("red",500)))
+boxplot(prost.data,col = c("blue","red")[factor(colnames(prost.data))]) 
 # Suppose we want to remove any gene that has an unusually low expression level
 # across many patients. We'll define "unusually low" as below the quantile
 # determined by <q.cutoff>, and "many patients" with another cutoff
@@ -159,7 +159,7 @@ tryCatch(checkEquals(p.val.converter.t, pValConverter(test.data)),
 
 FDR <- function(data, alpha) {
 	expected.disc <- alpha * nrow(data)
-	n.dis <- sum(pValConverter(data < alpha)
+	n.disc <- sum(pValConverter(data < alpha)
 	fdr <- expected.disc / n.disc
 	return(fdr)
 }
