@@ -27,7 +27,9 @@ n.prostate <- sum(colnames(prost.data) =="2")
 # cancer). Do the same for a trimmed mean with trim parameter of 0.1.
 
 status.means <- matrix(c(rowMeans(prost.data[,colnames(prost.data) =="1"]),rowMeans(prost.data[,colnames(prost.data) =="2"])),nrow=1000,ncol=2,byrow=FALSE)
-status.trim.means <-
+for (i in 1:1000){
+	thedata <- c(mean(prost.data[,colnames(prost.data)=="2"][i,1]), mean(prost.data[,colnames(prost.data)=="2"][i,1]))}
+stats.trim.means <- matrix(thedata,nrow = 1000,ncol = 2)
 
 
 # Back to the original dataset. We are interested in looking at the distribution
@@ -139,9 +141,9 @@ tryCatch(checkEquals(p.val.converter.t, pValConverter(test.data)),
 # 5) you should add a red line at y=1 across the entire plot (look at the
 # "abline" function). This line represents the expected proportion p-values in
 # each bin.
-
-hist(prost.data,breaks = seq(from = 0, to = 1, by = .05),freq = FALSE,main = "Prostate Data p-values",xlab = "p-values")
-abline(a = 1, b = 0)
+bin = seq(1,length(prost.data),by = .05)
+#hist(prost.data,breaks = bin,freq = FALSE,main = "Prostate Data p-values",xlab = "p-values")
+#abline(a = 1, b = 0)
 
 # You should notice that your histogram contains a spike for the lowest
 # p-values. Some of these represent discoveries (i.e. genes whose expression
