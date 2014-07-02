@@ -21,8 +21,9 @@ load('ex2-tests.rda')
 #   variance given by <var> and mean given by the jth entry of <means>.
 
 simpleNormSim <- function(means, sim.size=50, var=1) {
-
-    # your code here
+    simulation <- lapply(means,rnorm,n = sim.size,sd = var)
+	return(simulation)
+# your code here
 }
 
 set.seed(47)
@@ -55,6 +56,8 @@ advancedNormSim <- function(sim.sizes, means, vars) {
 
     stopifnot(all.equal(length(sim.sizes), length(means), length(vars)))
     # your code here
+	simulations<-mapply(rnorm,means,n = sim.sizes,sd = sqrt(vars))
+	return(simulations)
 }   
 
 sizes.t <- c(25, 50, 25, 50)

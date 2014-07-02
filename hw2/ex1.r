@@ -18,11 +18,15 @@ load('ex1-tests.rda')
 # second the upper bound
 
 outlierCutoff <- function(data) {
-    # your code here
-    
+	outlier.cutoffs <- matrix(,2,ncol(data))
+	for (i in 1:ncol(data)){
+		current.data <- data[,i]
+		outlier.cutoffs[2,i] <- median(current.data) + 1.5*IQR(current.data)
+		outlier.cutoffs[1,i] <- median(current.data) - 1.5*IQR(current.data)}
+	return(outlier.cutoffs)
 }
 
-tryCatch(checkIdentical(outlier.cutoff.t, outlierCutoff(ex1.test)),
+tryCatch(checkIdentical(unname(outlier.cutoff.t), unname(outlierCutoff(ex1.test))),
          error=function(err) errMsg(err))
       
 
@@ -48,10 +52,13 @@ tryCatch(checkIdentical(outlier.cutoff.t, outlierCutoff(ex1.test)),
 
 removeOutliers <- function(data, max.outlier.rate) {
 
-    stopifnot(max.outlier.rate>=0 & max.outlier.rate<=1)
-    
-    # your code here
+	stopifnot(max.outlier.rate>=0 & max.outlier.rate<=1)
+	outlier.cutoffs <- outlierCutoff(data)
+	t.f.data <- mapply(function(column,number) column<number,data,outlier.cutoffs[1,]) | mapply(function(column,number) column > number,data,outlier.cutoffs[2,]) 
+	num.of.false <- sum(rowSums(t.f.data))
+	subset.data <- data[rowSums(t.f.data)/ncol(data) <=max.outlier.rate,]
+	
+	return(subset.data)
 }
-
 tryCatch(checkIdentical(remove.outlier.t, removeOutliers(ex1.test, 0.25)),
          error=function(err) errMsg(err))
