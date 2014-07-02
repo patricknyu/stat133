@@ -19,8 +19,12 @@ load('ex3-tests.rda')
 #   levels (this should be a num.factors x num.numeric.variables matrix).
 
 meanByLevel <- function(data) {
-	find.factor <- !sapply(data,is.numeric)
+	find.factor <- data[sapply(data,is.factor)]
+	numeric.data <- data[sapply(data,is.numeric)]
+	return(sapply(numeric.data,function(column) by(column,find.factor,mean)))
+	
 	# your code here
+	
 }
 
 tryCatch(checkIdentical(mean.by.level.t, meanByLevel(iris)), error=function(err)
@@ -49,6 +53,11 @@ tryCatch(checkIdentical(mean.by.level.t, meanByLevel(iris)), error=function(err)
 stdLevelDiff <- function(data) {
 	
     # your code here
+	numeric.data = data[sapply(data,is.numeric)]
+	mean.by.level = meanByLevel(data)
+	means.by.var = sapply(numeric.data,function(column) mean(column))
+	level.diff = abs(t(t(t(t(mean.by.level)-means.by.var))/sapply(numeric.data,function(column) sd(column))))
+	return(level.diff)
 }
 
 tryCatch(checkIdentical(std.level.diff.t, abs(stdLevelDiff(iris))),
