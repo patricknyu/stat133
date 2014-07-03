@@ -39,10 +39,23 @@ load('lab3-tests.rda')
 stratifiedTest <- function(data, group.variable, group.cutoff) {
 
     stopifnot(group.variable %in% names(data)[2:6]) 
-
-    # your code here
+    data.small <- data[data[group.variable] <=group.cutoff,]
+	data.large <- data[data[group.variable] > group.cutoff,] 
+	t.test.large <- t.test(data.large[data.large$smoke ==1,]$bwt,data.large[data.large$smoke ==0,]$bwt)
+	t.test.small <- t.test(data.small[data.small$smoke ==1,]$bwt,data.small[data.small$smoke ==0,]$bwt)
+	t.outputs <- list(list(t.test.small$stat,t.test.small$p.val,data.small),list(t.test.large$stat,t.test.large$p.val,data.large))		
+	density.small.smoke <- density(data.small[data.small$smoke ==1,]$bwt)
+	density.small.no <- density(data.small[data.small$smoke == 0,]$bwt)
+	density.large.smoke <- density(data.large[data.large$smoke ==1,]$bwt)
+	density.large.no <- density(data.large[data.large$smoke ==0,]$bwt)
+	par(mfrow = c(2,1))
+	plot(density.small.no,main = "Data below the cutoff")
+	lines(density.small.smoke,col = 'red')
+	plot(density.large.no, "Data above the cutoff")
+	lines(density.large.smoke,col = 'red')
+	# your code here
 }
-
+test.alternative <- "less"
 output.t1 <- stratifiedTest(babies.data, "height", 64)
 tryCatch(checkEquals(stratified.test.t1, unname(unlist(output.t1))),
          error=function(err) errMsg(err))
