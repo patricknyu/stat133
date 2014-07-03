@@ -43,7 +43,7 @@ stratifiedTest <- function(data, group.variable, group.cutoff) {
 	data.large <- data[data[group.variable] > group.cutoff,] 
 	t.test.large <- t.test(data.large[data.large$smoke ==1,]$bwt,data.large[data.large$smoke ==0,]$bwt)
 	t.test.small <- t.test(data.small[data.small$smoke ==1,]$bwt,data.small[data.small$smoke ==0,]$bwt)
-	t.outputs <- list(list(t.test.small$stat,t.test.small$p.val,data.small),list(t.test.large$stat,t.test.large$p.val,data.large))		
+	t.outputs <- list(list(t.test.small$stat,t.test.small$p.val),list(t.test.large$stat,t.test.large$p.val))
 	density.small.smoke <- density(data.small[data.small$smoke ==1,]$bwt)
 	density.small.no <- density(data.small[data.small$smoke == 0,]$bwt)
 	density.large.smoke <- density(data.large[data.large$smoke ==1,]$bwt)
@@ -54,6 +54,7 @@ stratifiedTest <- function(data, group.variable, group.cutoff) {
 	plot(density.large.no, "Data above the cutoff")
 	lines(density.large.smoke,col = 'red')
 	# your code here
+	return(t.outputs)
 }
 test.alternative <- "less"
 output.t1 <- stratifiedTest(babies.data, "height", 64)
