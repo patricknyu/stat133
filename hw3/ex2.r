@@ -14,7 +14,9 @@ load('ex2-tests.rda')
 #   column. The row pairs should be maintained in this matrix
 
 colSorter <- function(data.matrix) {
-
+	sorted.matrix <- data.matrix[order(data.matrix[,2]),]
+	sorted.matrix <- sorted.matrix[order(sorted.matrix[,1]),]
+	return(sorted.matrix)
     # your code here **
 }
 
@@ -35,7 +37,8 @@ tryCatch(checkEquals(col.sorter.t, colSorter(ex2.test1)),
 #   might have to make adjustments).
 
 rowSorter <- function(data.matrix) {
-
+	sorted.matrix <- t(apply(data.matrix,1,sort,decreasing = T))	
+	return(sorted.matrix)
     # your code here **
 }
 
@@ -59,7 +62,9 @@ tryCatch(checkEquals(row.sorter.t, rowSorter(ex2.test2)),
 #   <sort.name>
 
 factorSorter <- function(data, sort.name) {
-
+	index <- which(sort.name %in% colnames(data))
+	sorted.factors <- data[order(data[,index]),]
+	return(sorted.factors)
     # your code here ***
 }
 
