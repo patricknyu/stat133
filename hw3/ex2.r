@@ -63,10 +63,11 @@ tryCatch(checkEquals(row.sorter.t, rowSorter(ex2.test2)),
 
 factorSorter <- function(data, sort.name) {
 	index <- which(sort.name %in% colnames(data))
-	sorted.factors <- data[order(data[,index]),]
-	return(sorted.factors)
+	#sorted.factors <- data[order(data[,index]),]
+	factor.variable <- data$Species
+	return(by(data,factor.variable,function(x) x[order(x[,index]),]))
     # your code here ***
 }
 
-tryCatch(checkEquals(factor.sorter.t, factorSorter(iris, 'Sepal.Length')),
-         error=function(err) errMsg(err))
+tryCatch(checkEquals(unname(unlist(factor.sorter.t)), unname(unlist(factorSorter(iris, 'Sepal.Length'))),
+         error=function(err) errMsg(err)))

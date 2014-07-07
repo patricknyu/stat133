@@ -20,7 +20,9 @@ load('ex4-tests.rda')
 # your x-axis to be 20, 100. You will need to read in the data to do this.
 
 # your code here *
-
+cancer <- read.csv('cancer.csv')
+plot(density(cancer[cancer$TRT ==0,]$AGE),main = 'Patinet age by group',xlab = 'age',xlim = c(20,100))
+lines(density(cancer[cancer$TRT ==1,]$AGE),col = 'red')
 # Produce four plots in the same window comparing the control and treatment
 # group oral conditions at each period (initial, 2wk, 4wk, 6wk). These
 # plots should be titled "initial", "2wk", "4wk", and "6wk"
@@ -31,8 +33,18 @@ load('ex4-tests.rda')
 # NOTE: These plots wil look super wierd, don't worry about that.
 
 # your code here ***
-
-
+par(mfrow = c(2,2))
+control = cancer[cancer$TRT ==0,]
+treatment = cancer[cancer$TRT ==1,]
+#mapply(
+plot(density(control$TOTALCIN),main = 'initial',ylab = 'condition',xlim = c(1,20),ylim = c(0,0.6))
+lines(density(treatment$TOTALCIN),col = 'red')
+plot(density(control$TOTALCW2),main = '2wk',ylab ='condition',xlim = c(1,20),ylim = c(0,0.6))
+lines(density(treatment$TOTALCIN),col = 'red')
+plot(density(control$TOTALCW4),main = '4wk',ylab = 'condition',xlim = c(1,20),ylim = c(0,0.6))
+lines(density(treatment$TOTALCIN),col = 'red')
+plot(density(control$TOTALCW6),main = '6wk',ylab = 'condition',xlim = c(1,20),ylim = c(0,0.6))
+lines(density(treatment$TOTALCIN),col = 'red')
 # Load in the "babies.csv" dataset for this problem. Implement the function
 # "testGroupsGestation" that takes the following arguments:
 #
@@ -56,13 +68,15 @@ testGroupsGestation <- function(data, group1.idcs, group2.idcs,
                                 test.alternative='two.sided') {
 
     stopifnot(!any(group1.idcs %in% group2.idcs))
-
-    # your code here **
+	group1 <- data[group1.idcs,]$gestation
+	group2 <- data[group2.idcs,]$gestation
+    t.test.output <- t.test(group1,group2,alternative = test.alternative)
+	return(t.test.output)
+	# your code here **
 }
-
-tryCatch(checkEquals(test.groups.gestation.t,
+tryCatch(checkEquals(test.groups.gestation.t$p.value,
                      testGroupsGestation(test.data, g1, g2,
-                                         test.alternative='greater')),
+                                         test.alternative='greater')$p.value),                                                                                        
          error=function(err) errMsg(err))
 
 # Use your function to perform a one-sided t-test comparing the gestation

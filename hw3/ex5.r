@@ -15,8 +15,9 @@ load('ex5-tests.rda')
 #   five should be the final 5 rows of <data>
 
 firstLast <- function(data) {
-
-    # your code here *
+	first.last <- data[-c(6:(nrow(data)-5)),]
+    return(first.last)
+# your code here *
 }
 
 tryCatch(checkEquals(first.last.t, firstLast(iris)), error=function(err)
@@ -34,7 +35,8 @@ tryCatch(checkEquals(first.last.t, firstLast(iris)), error=function(err)
 # observations (rows)
 
 npRatio <- function(data) {
-
+	np.ratio <- ncol(data)/nrow(data)
+	return(np.ratio)
     # your code here *
 }
 
@@ -53,7 +55,17 @@ tryCatch(checkEquals(np.ratio.t, npRatio(iris)), error=function(err)
 #   Mean, 3rd Quartile, and Max values for any numeric variable in <data>
 
 numericSummary <- function(data) {
-
+	nums <- sapply(data,is.numeric)
+	only.nums <- data[,nums]
+	numeric.summary <- matrix(,ncol = ncol(only.nums),nrow = 6)
+	for (i in 1:ncol(only.nums)){
+		numeric.summary[1,i] = min(only.nums[,i])
+		numeric.summary[2,i] = quantile(only.nums[,i],.25)
+		numeric.summary[3,i] = median(only.nums[,i])
+		numeric.summary[4,i] = round(mean(only.nums[,i]),3)
+		numeric.summary[5,i] = quantile(only.nums[,i],.75)
+		numeric.summary[6,i] = max(only.nums[,i])}
+	return(numeric.summary)
     # your code here **
 }
 
@@ -71,7 +83,8 @@ tryCatch(checkEquals(numeric.summary.t, unname(numericSummary(ex5.test1))),
 #   (column) of the data frame
 
 getClass <- function(data) {
-
+	var.classes <- unlist(lapply(data,class))
+	return(var.classes)
     # your code here *
 }
 
