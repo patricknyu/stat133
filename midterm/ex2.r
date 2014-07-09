@@ -10,7 +10,8 @@ errMsg <- function(err) print(err)
 # Returns the number of factor vectors in the dataframe.
 
 num.factors = function(d) {
-    # your code here
+	ans <-sum(mapply(is.factor,unname(d)))
+	return(ans)
 }
 
 first = data.frame(x=rnorm(10), y=as.factor(1:10))
@@ -32,7 +33,8 @@ tryCatch(checkEquals(2, num.factors(second)),
 # Hint:  Use the previous function num.factors
 
 num.factors2 = function(l) {
-    # your code here
+	ans <-sum(unlist(lapply(l,num.factors)))
+	return(ans)
 }
 
 list1 = list(first, second)
@@ -58,7 +60,14 @@ tryCatch(checkEquals(4, num.factors2(list2)),
 #  else return x*y
 
 sum.or.product = function(x, y=10) {
-    # your code here
+	logical <- x >y
+	ans <- vector(,length= length(logical))
+	for(i in (1:length(logical))){
+		if(logical[i]){
+			ans[i] = x[i] + y[i]}
+		else{
+			ans[i] = x[i]*y[i]}}
+	return(ans) 
 }
 
 x=1:10
@@ -87,8 +96,21 @@ tryCatch(checkEquals(x+y, sum.or.product(x,y)),
 #     FALSE when the number is odd
 
 odd = function(x, flip=FALSE) {
-    # your code here
+	ans <- vector(,length = length(x))
+	if(flip){
+		for(i in (1:length(x))){
+			if(x[i] %%2 == 1){
+				ans[i] = FALSE}
+			else{
+				ans[i] = TRUE}}}
+	else{
+        for(i in (1:length(x))){
+            if(x[i] %%2 == 0){
+                ans[i] = FALSE}
+            else{
+                ans[i] = TRUE}}
 }
+return(ans)}
 
 xs = c(rep(1,5),rep(2,5))
 os = c(rep(TRUE,5),rep(FALSE,5))
@@ -111,7 +133,6 @@ tryCatch(checkEquals(!os, odd(xs, flip=TRUE)),
 # computation of the return value.
 
 sum.adm = function(x, na.rm=FALSE){
-    # your code here
 }
 
 x = 1:3
