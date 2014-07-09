@@ -36,8 +36,6 @@ lines(density(cancer[cancer$TRT ==1,]$AGE),col = 'red')
 par(mfrow = c(2,2))
 control = cancer[cancer$TRT ==0,]
 treatment = cancer[cancer$TRT ==1,]
-x.l <- c(1,20)
-y.l <- c(0,.6)
 variable.names <- c("initial", "2wk", "4wk", "6wk")
 mapply(function(control.group, treatment.group, variable.name){
     plot(density(control.group), main=variable.name,ylab = 'condition',xlim = c(1,20),ylim = c(0,.6))

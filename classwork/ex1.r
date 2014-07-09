@@ -48,4 +48,4 @@ m = matrix(1:100, 25) # DO NOT EDIT THIS LINE
 # Call this vector h.  HINT: apply may be useful
 
 # your code here
-h <- rowSums(m)
+h <- rowSums(m^2)
