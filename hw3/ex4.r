@@ -36,15 +36,24 @@ lines(density(cancer[cancer$TRT ==1,]$AGE),col = 'red')
 par(mfrow = c(2,2))
 control = cancer[cancer$TRT ==0,]
 treatment = cancer[cancer$TRT ==1,]
-#mapply(
-plot(density(control$TOTALCIN),main = 'initial',ylab = 'condition',xlim = c(1,20),ylim = c(0,0.6))
-lines(density(treatment$TOTALCIN),col = 'red')
-plot(density(control$TOTALCW2),main = '2wk',ylab ='condition',xlim = c(1,20),ylim = c(0,0.6))
-lines(density(treatment$TOTALCIN),col = 'red')
-plot(density(control$TOTALCW4),main = '4wk',ylab = 'condition',xlim = c(1,20),ylim = c(0,0.6))
-lines(density(treatment$TOTALCIN),col = 'red')
-plot(density(control$TOTALCW6),main = '6wk',ylab = 'condition',xlim = c(1,20),ylim = c(0,0.6))
-lines(density(treatment$TOTALCIN),col = 'red')
+x.l <- c(1,20)
+y.l <- c(0,.6)
+variable.names <- c("initial", "2wk", "4wk", "6wk")
+mapply(function(control.group, treatment.group, variable.name){
+    plot(density(control.group), main=variable.name,ylab = 'condition',xlim = c(1,20),ylim = c(0,.6))
+    lines(density(treatment.group), col='red')
+    }, control[, 6:9], treatment[, 6:9], variable.names)
+#func <- function(c,t,names,yla,xli,yli) plot(c,t
+#mapply(func,control,treatment,c('initial
+#plot(density(control$TOTALCIN),main = 'initial',ylab = 'condition',xlim = c(1,20),ylim = c(0,0.6))
+#lines(density(treatment$TOTALCIN),col = 'red')
+#plot(density(control$TOTALCW2),main = '2wk',ylab ='condition',xlim = c(1,20),ylim = c(0,0.6))
+#lines(density(treatment$TOTALCIN),col = 'red')
+#plot(density(control$TOTALCW4),main = '4wk',ylab = 'condition',xlim = c(1,20),ylim = c(0,0.6))
+#lines(density(treatment$TOTALCIN),col = 'red')
+#plot(density(control$TOTALCW6),main = '6wk',ylab = 'condition',xlim = c(1,20),ylim = c(0,0.6))
+#lines(density(treatment$TOTALCIN),col = 'red')
+
 # Load in the "babies.csv" dataset for this problem. Implement the function
 # "testGroupsGestation" that takes the following arguments:
 #
