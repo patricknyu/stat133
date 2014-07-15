@@ -45,7 +45,7 @@ generateKids <- function(lambda, kappa, parent) {
     # whose rate is proportional to the length of <parent>'s life
 
     # your code here
-    # n.kids <- your code here
+    n.kids <- rpois(1,lambda) 
     
     if (n.kids) {
 
