@@ -45,7 +45,7 @@ generateKids <- function(lambda, kappa, parent) {
     # whose rate is proportional to the length of <parent>'s life
 
     # your code here
-    n.kids <- rpois(1,lambda) 
+    n.kids <- rpois(1,lambda*(parent[,'assassination.date']-parent[,'birth.date'])) 
     
     if (n.kids) {
 
@@ -57,10 +57,9 @@ generateKids <- function(lambda, kappa, parent) {
         # <life.lengths>: a random numeric vector indicating the length of
         # each child's life
 
-        # kid.birthdays <- your code here
-        # life.lengths <- your code here
-        # your code here
-
+        kid.birthdays <- runif(n.kids,parent[,'birth.date'],parent[,'assassination.date'])
+        life.lengths <- rexp(n.kids,kappa)+parent[,'assassination.date']
+		kids <- data.frame(parent.id = parent[,'parent.id'], child.id = 1:n.kids,birth.date = kid.birthdays, assassination.date = life.lengths)
         return(kids)
     } else return(NULL) #return null if <parent> has no kids
 }
@@ -96,7 +95,7 @@ nextGeneration <- function(lambda, kappa, parents) {
     # <parents>. Each element of this list should be a dataframe of the
     # kids born to the corresponding parent. Call this list <next.gen>
 
-    #next.gen <- your code here
+    next.gen <- 
 
 
     # The following code removes any list element that has no entries
