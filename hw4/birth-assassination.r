@@ -45,7 +45,11 @@ generateKids <- function(lambda, kappa, parent) {
     # whose rate is proportional to the length of <parent>'s life
 
     # your code here
-    n.kids <- rpois(1,lambda) 
+	birth.date <- unname(unlist(parent['birth.date']))
+	a.date <- unname(unlist(parent['assassination.date']))
+	p.id <- unname(unlist(parent['parent.id']))
+    c.id <- unname(unlist(parent['child.id']))
+	n.kids <- rpois(1,lambda*(a.date-birth.date)) 
     
     if (n.kids) {
 
@@ -57,10 +61,9 @@ generateKids <- function(lambda, kappa, parent) {
         # <life.lengths>: a random numeric vector indicating the length of
         # each child's life
 
-        # kid.birthdays <- your code here
-        # life.lengths <- your code here
-        # your code here
-
+        kid.birthdays <- runif(n.kids,birth.date,a.date)
+        life.lengths <- rexp(n.kids,kappa)+a.date
+		kids <- data.frame(parent.id = c.id, child.id = 1:n.kids,birth.date = kid.birthdays, assassination.date = life.lengths)
         return(kids)
     } else return(NULL) #return null if <parent> has no kids
 }
@@ -96,7 +99,7 @@ nextGeneration <- function(lambda, kappa, parents) {
     # <parents>. Each element of this list should be a dataframe of the
     # kids born to the corresponding parent. Call this list <next.gen>
 
-    #next.gen <- your code here
+    next.gen <- apply(parents,1,function(x) generateKids(lambda,kappa,x))
 
 
     # The following code removes any list element that has no entries
@@ -108,9 +111,9 @@ nextGeneration <- function(lambda, kappa, parents) {
 
     # If <next.gen> is not null, change the <child.id> variable so that it
     # ranges from 1 to nrow(next.gen)
-
-    # your code here
-    
+	n.row <- nrow(next.gen)
+    if(!is.null(next.gen)){
+		next.gen['child.id'] = 1:(n.row)}
     return(next.gen)
 }
 
@@ -134,7 +137,8 @@ bAGen <- function(lambda, kappa, max.gen) {
     # <birth.date> = 0
     # <assassination.date> a random variable from an expoenetial
     # distribution with rate <kappa>
-
+	generation.list[[1]] <- data.frame('parent.id' = 0,'child.id' = 0, 'birth.date' = 0, 'assassination.date' = rexp(1,kappa))
+	
     # your code here
 
     # Simulate the birth assassination process using your "nextGeneration"
@@ -144,7 +148,13 @@ bAGen <- function(lambda, kappa, max.gen) {
 
       
     # your code here
-
+	for (i in 2:max.gen){
+		nex <-nextGeneration(lambda,kappa,generation.list[[i-1]])
+		if(!is.null(nex)){
+			generation.list[[i]] <- nex}
+		else{
+			break}
+		}
 
     # This removes extra list elements if the family died out. You do not
     # need to add anything here
@@ -157,9 +167,9 @@ bAGen <- function(lambda, kappa, max.gen) {
 # 0.2 for <sim.1>, <sim.2>, and <sim.3> respectively
 
 set.seed(47)
-# sim.1 <- your code here
-# sim.2 <- your code here
-# sim.3 <- your code here
+sim.1 <- replicate(1000,bAGen(.1,.75,10))
+sim.2 <- replicate(1000,bAGen(.1,.5,10))
+sim.3 <- replicate(1000,bAGen(.1,.2,10))
 
 
 # Implement the function gensSurvived. Your function should take the
@@ -178,7 +188,8 @@ set.seed(47)
 gensSurvived <- function(bagen.simulation) {
 
     # your code here
-
+	generations <- lapply(bagen.simulation,length)
+	return(generations)
 }
 
 # Use your gensSurvived function to create the following plot:
