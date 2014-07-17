@@ -17,12 +17,14 @@ load('ex1-tests.rda')
 # function.
 
 dataDist <- function(data, norm='euclidean') {
-
-    # your code here
+    cols <- sapply(data,is.numeric)
+	ans <- dist(data[cols],norm)
+	return(ans)
+	# your code here
 
 }
 
-tryCatch(checkEquals(data.dist.t, dataDist(iris)), error=function(err)
+tryCatch(checkEquals(c(data.dist.t), c(dataDist(iris))), error=function(err)
          errMsg(err))
 
 
@@ -43,9 +45,9 @@ tryCatch(checkEquals(data.dist.t, dataDist(iris)), error=function(err)
 # HINT: you may find the cutree function useful
 
 clustLabel <- function(data, norm='euclidean', k) {
-
+	ans <- cutree(hclust(dataDist(data,norm)),k)
     # your code here
-
+	return(ans)
 }
 
 tryCatch(checkEquals(clust.label.t, clustLabel(iris, k=3)),
@@ -73,9 +75,13 @@ tryCatch(checkEquals(clust.label.t, clustLabel(iris, k=3)),
 # name of the factor that occurs most frequently in vector
 
 evalClusters <- function(data, true.labels, norm='euclidean', k) {
-
+	groups <- clustLabel(data,norm,k)
+	max.rates <- by(true.labels,groups,function(clust){
+		max.factor <- names(which.max(table(clust)))
+		sum(clust == max.factor)/length(clust)})
+	return(as.vector(max.rates))	
     # your code here
-
+	
 }
 
 tryCatch(checkEquals(eval.clusters.t, evalClusters(iris, iris$Species, k=3)),
@@ -100,10 +106,12 @@ tryCatch(checkEquals(eval.clusters.t, evalClusters(iris, iris$Species, k=3)),
 # at <h>.
 
 heightCluster <- function(data, norm='euclidean', h, ...) {
-    
-    # your code here
-
+	a <- hclust(dataDist(data,norm))
+	plot(a)
+	abline(h=h,col = 'red')
+	groups <- cutree(a,k=NULL,h)
+	return(groups)
 }
 
 tryCatch(checkEquals(height.cluster.t, heightCluster(iris, h=4, cex=0.2)),
-         error=function(err) errMsg(err))
+         error = function(err) errMsg(err))
