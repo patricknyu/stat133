@@ -20,7 +20,6 @@ dataDist <- function(data, norm='euclidean') {
     cols <- sapply(data,is.numeric)
 	ans <- dist(data[cols],norm)
 	return(ans)
-	# your code here
 
 }
 
@@ -46,7 +45,6 @@ tryCatch(checkEquals(c(data.dist.t), c(dataDist(iris))), error=function(err)
 
 clustLabel <- function(data, norm='euclidean', k) {
 	ans <- cutree(hclust(dataDist(data,norm)),k)
-    # your code here
 	return(ans)
 }
 
@@ -80,8 +78,6 @@ evalClusters <- function(data, true.labels, norm='euclidean', k) {
 		max.factor <- names(which.max(table(clust)))
 		sum(clust == max.factor)/length(clust)})
 	return(as.vector(max.rates))	
-    # your code here
-	
 }
 
 tryCatch(checkEquals(eval.clusters.t, evalClusters(iris, iris$Species, k=3)),
