@@ -14,10 +14,7 @@ load('ex1-tests.rda')
 # components in <pca> whose associated variance exceeds <var.level>
 
 sigComponents <- function(pca, var.level) {
-
-    # your code here
-
-    
+	return(sum(unlist(pca[1])>var.level)) 
 }
 
 tryCatch(checkEquals(2, sigComponents(iris.pca, 0.9)), error=function(err)
@@ -35,9 +32,9 @@ tryCatch(checkEquals(2, sigComponents(iris.pca, 0.9)), error=function(err)
 # pc1, the second the proportion explained by pc1 and pc2 combined, etc.)
 
 varProportion <- function(pca) {
-
-    # your code here
-
+	vars <- pca$sdev^2 
+	vars <- vars/sum(vars) 
+	return(cumsum(vars)) 
 }
 
 tryCatch(checkEquals(var.proportion.t, varProportion(iris.pca)),
@@ -64,9 +61,8 @@ tryCatch(checkEquals(var.proportion.t, varProportion(iris.pca)),
 # should return integer(0)***
 
 reduceData <- function(data, var.level, scale=T, center=T) {
-
+	
     # your code here
-
 }
 
 
