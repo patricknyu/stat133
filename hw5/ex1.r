@@ -61,8 +61,12 @@ tryCatch(checkEquals(var.proportion.t, varProportion(iris.pca)),
 # should return integer(0)***
 
 reduceData <- function(data, var.level, scale=T, center=T) {
-	
-    # your code here
+	pca <- prcomp(data,center = center, scale = scale)
+	nums <- sigComponents(pca,var.level)
+	if(nums == 0){
+		return(integer(0))}
+	else{
+		return(pca$x[,1:nums])}
 }
 
 
@@ -91,14 +95,18 @@ tryCatch(checkEquals(reduce.data.t, reduceData(iris.data, 0.9)),
 # 4) run hierarchical clustering on your reduced data. Plot the resulting
 #   dendrogram. Cut the tree so that you have 3 clusters and store the
 #   resulting cluster labels as the variable <cluster.labels.h>
+wines <- read.csv('wines.csv')
 
+wine.reduced <- reduceData(wines,1)
 
-# wine.reduced <- your code here
+set.seed(47)
 
-# cluster.labels.k <- your code here, set seed to 47 before running the
+cluster.labels.k <- kmeans(wine.reduced,3,iter.max = 10)$cluster
 # algorithm
 
-# cluster.labels.h <- your code here
+cluster.labels.h <- hclust(dist(wine.reduced))
+plot(cluster.labels.h)
+cluster.labels.h <- cutree(cluster.labels.h,3,h = NULL)
 
 
 
@@ -123,12 +131,15 @@ tryCatch(checkEquals(reduce.data.t, reduceData(iris.data, 0.9)),
 #should run the command "stop", printing the error messages:
 # "len variables > 2" and "incompatible dimensions" respectively.
 
-
+library(RColorBrewer)
 plotClusters <- function(data, variables, cluster.labels, ...) {
-    
-    # your code here
-
-}
+	if(!(length(variables) == 2)){
+		stop('len variables > 2')}
+	if (!(length(cluster.labels) == nrow(data))){
+		stop('incompatible dimensions')}
+	col = brewer.pal(length(unique(cluster.labels)),'Set1')
+	plot(data[,variables],col = col[cluster.labels],...)
+}	
 
 
 
@@ -147,4 +158,8 @@ tryCatch(checkException(plotClusters(iris.data, 1:3, 1:nrow(iris.data)),
 # variables but color the points by the hierarchical clustering labels and
 # the true labels (from col 1 of wines.csv) respectively. Change the titles
 # of each of these rows accordingly but keep the pch as 20.
-
+par(mfrow = c(3,3))
+values <- list(c(1,2),c(2,3),c(1,3))
+x <- sapply(values,function(x) plotClusters(wine.reduced,x,cluster.labels.k))
+y <- sapply(values,function(x) plotClusters(wine.reduced,x,cluster.labels.h))
+z <- sapply(values,function(x) plotClusters(wine.reduced,x,wines[,1]))
