@@ -1,0 +1,51 @@
+ERROR:root:(2 points) Checking R('1 == length(poisProc(0.5, 10))')[0]
+ERROR:root:... Expecting: True
+ERROR:root:... But got:   False
+ERROR:root:(2 points) Checking R('is.integer(poisProc(0.5, 10))')[0]
+ERROR:root:... Expecting: True
+ERROR:root:... But got:   False
+INFO:root:Executed R('set.seed(47)')
+ERROR:root:(2 points) Checking R('all.equal(10, poisProc(0.5, 10))')[0]
+ERROR:root:... Expecting: True
+ERROR:root:... But got:   Modes: numeric, NULL
+ERROR:root:(2 points) Checking R('all.equal(8, poisProc(0.3, 30))')[0]
+ERROR:root:... Expecting: True
+ERROR:root:... But got:   Modes: numeric, NULL
+ERROR:root:(2 points) Checking R('all.equal(6, poisProc(1, 5))')[0]
+ERROR:root:... Expecting: True
+ERROR:root:... But got:   Modes: numeric, NULL
+ERROR:root:(2 points) Checking R('1 == length(poisSim(0.5, 10))')[0]
+ERROR:root:... Expecting: True
+ERROR:root:... But got:   False
+ERROR:root:(2 points) Checking R('is.integer(poisSim(0.5, c(10, 20)))')[0]
+ERROR:root:... Expecting: True
+ERROR:root:... But got:   False
+INFO:root:Executed R('set.seed(47)')
+ERROR:root:(2 points) Checking R('all.equal(c(2, 0, 1, 2, 1), poisSim(0.25, 1:5))')[0]
+ERROR:root:... Expecting: True
+ERROR:root:... But got:   Modes: numeric, NULL
+ERROR:root:(2 points) Checking R('all.equal(c(1, 0, 1, 1, 3) , poisSim(0.15, 4:8))')[0]
+ERROR:root:... Expecting: True
+ERROR:root:... But got:   Modes: numeric, NULL
+ERROR:root:(2 points) Checking R('all.equal(c(0, 3) , poisSim(0.5, c(1,5)))')[0]
+ERROR:root:... Expecting: True
+ERROR:root:... But got:   Modes: numeric, NULL
+ERROR:root:(2 points) Checking Are there four histograms in one figure?
+ERROR:root:... Expecting: False
+ERROR:root:... But got:   n
+ERROR:root:(2 points) Checking Are the x-axis identical (0 to max arrivals)?
+ERROR:root:... Expecting: False
+ERROR:root:... But got:   n
+ERROR:root:(2 points) Checking Is freq=F set for all histograms?
+ERROR:root:... Expecting: False
+ERROR:root:... But got:   n
+ERROR:root:(1 points) Checking Is the x-axis labeled \'arrivals\'?
+ERROR:root:... Expecting: False
+ERROR:root:... But got:   n
+ERROR:root:(1 points) Checking Is the main title NULL?
+ERROR:root:... Expecting: False
+ERROR:root:... But got:   n
+ERROR:root:(2 points) Checking Is a fitted Poisson overlayed in red?
+ERROR:root:... Expecting: False
+ERROR:root:... But got:   n
+INFO:root:You got a 0 out of 30.
