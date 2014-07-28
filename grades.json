@@ -189,6 +189,35 @@
             }, 
             "penalty": 0, 
             "possible": 30
+        }, 
+        "midterm": {
+            "earned": 22, 
+            "hash": "14622e812fd4abfed071134bd287784d4293dc7f", 
+            "note": "", 
+            "parts": {
+                "ex1": {
+                    "earned": 4, 
+                    "possible": 4
+                }, 
+                "ex1_fig": {
+                    "earned": 5, 
+                    "possible": 5
+                }, 
+                "ex2": {
+                    "earned": 13, 
+                    "possible": 18
+                }, 
+                "extra_credit": {
+                    "earned": 0, 
+                    "possible": 2
+                }, 
+                "extra_credit_fig": {
+                    "earned": 0, 
+                    "possible": 1
+                }
+            }, 
+            "penalty": 0, 
+            "possible": 30
         }
     }, 
     "login": "patricknyu", 
