@@ -15,9 +15,6 @@ hist(rowSums(t[,5:71] == 0,na.rm = TRUE),xlab = 'Question Number',ylab = '# of O
 # omitted. Remove all observations with more than this number of omitted
 # questions.
 non.response.cutoff <- quantile(rowSums(t[,5:71] == 0,na.rm = TRUE),.99)
-if (non.response.cutoff == integer(0)){
-	ling-data-clean.data  <- t[-which(rowSums(t[,5:71] == 0,na.rm = TRUE) >non.response.cutoff),]}
-else{
-	ling-data-clean.data <- t}
+write.table(as.data.frame(t[-which(rowSums(t[,5:71] == 0,na.rm = TRUE) >=non.response.cutoff),]),file = 'ling-data-clean.data')
 # save the subset of remaining observations in a file named
 # "ling-data-clean.data" 
