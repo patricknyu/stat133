@@ -15,9 +15,12 @@ load('lab7-tests.rda')
 # throw the error: "length betas does not match p"
 
 dataGenerator <- function(X, betas, var) {
-
-    # your code here
-
+	X <- as.matrix(X)
+	if(ncol(X) != length(betas)){
+		stop('length betas does not match p')}
+	epsilon <- rnorm(nrow(X),0,sqrt(var))
+	y <- X %*% betas + epsilon
+	return(y)
 }
 
 set.seed(47)
@@ -37,9 +40,10 @@ tryCatch(checkEquals(lab7$dataGenerator.t, dataGenerator(lab7$predictors, 4, 4))
 # return an estimate of the values of <betas>.
 
 betaEstimator <- function(X, betas, var) {
-
-    # your code here
-
+	y <- dataGenerator(X,betas,var)
+	fit <- lm(y~X)
+	coefs <- fit$coefficients[2:length(fit$coefficients)]
+	return(coefs)
 }
 
 set.seed(47)
@@ -59,9 +63,7 @@ tryCatch(checkEquals(lab7$betaEstimator.t, betaEstimator(lab7$predictors, 4, 4))
 # hat.
 
 betaVariance <- function(X, var) {
-
-    # your code here
-
+	return(c(solve(t(X) %*% X)*var))
 }
 
 tryCatch(checkEquals(lab7$betaVariance.t, betaVariance(lab7$predictors, 4)),
@@ -76,7 +78,17 @@ tryCatch(checkEquals(lab7$betaVariance.t, betaVariance(lab7$predictors, 4)),
 # of beta.hats that are within 2 sd of beta over your 1000 simulations. Store
 # this value as prop.2sd.
 # ***make sure to set your seed to 47 before running your simulations***
+set.seed(47)
+n <- 100
+n.sims <- 1000
+beta <- 3
+var <- 2
 
-# beta.hats <- your code here
-# prop.2sd <- your code here
+x <- rnorm(n)
+beta.hats <- replicate(n.sims,betaEstimator(x,beta,var))
+
+beta.var <- betaVariance(x,var)
+beta.2sd <- 2*sqrt(beta.var)
+prop.2sd <- sum(beta.hats <=beta+beta.2sd & beta.hats >= beta-beta.2sd)/n.sims
+
 
