@@ -14,23 +14,27 @@ load('reformatting-tests.rda')
 # described in project1.pdf
 
 makeBinary <- function(response.row, n.responses) {
-
-
+	ans <- double(length = sum(n.responses))
+	n <- length(response.row)
+	place.holder <- 0
+	for(i in 1:length(response.row)){
+		ans[place.holder+response.row[i]] <- 1
+		place.holder <- place.holder + n.responses[i]
+		}
+	return(ans)	
 }
 
 
-tryCatch(checkEquals(make.binary.test1, makeBinary(make.binary.rr1,
-                                                   make.binary.nr))
-         error=function(err) errMsg(err))
+tryCatch(checkEquals(make.binary.test1, makeBinary(make.binary.rr1,make.binary.nr))
+         ,error=function(err) errMsg(err))
 
 tryCatch(checkEquals(make.binary.test2, makeBinary(make.binary.rr2,
                                                    make.binary.nr))
-         error=function(err) errMsg(err))
+         ,error=function(err) errMsg(err))
 
 # use your "makeBinary" function to reformat your "ling-data-clean.data"
 # dataset. Store this as a dataframe with variable names and order **as
 # indicated in project1.pdf**. Save this dataframe as the file
 # "binary-ling-data.data".
-    
-
-
+t <- read.table('ling-data-clean.data')
+binary-ling-data.data <- lapply(t[5:71],function(x) makeBinary(x,max(x)))

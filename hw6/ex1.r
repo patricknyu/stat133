@@ -35,8 +35,7 @@ load('hw6-tests.rda')
 # observations.
 
 tpr <- function(threshold, predicted, truth) {
-
-    # your code here
+	return(sum(truth[predicted>threshold])/sum(truth))
 }
 
 tryCatch(checkEquals(hw6$tpr.t1, tpr(0.5, hw6$tpr.pr, hw6$tpr.tr)),
@@ -59,8 +58,7 @@ tryCatch(checkEquals(hw6$tpr.t1, tpr(0.5, hw6$tpr.pr, hw6$tpr.tr)),
 # from class 1 divided by the total number of false observations.
 
 fpr <- function(threshold, predicted, truth) {
-
-    # your code here
+	return(sum(!truth[!(threshold>=predicted)])/sum(!truth))
 }
 
 tryCatch(checkEquals(hw6$fpr.t1, fpr(0.5, hw6$tpr.pr, hw6$tpr.tr)),
@@ -90,8 +88,15 @@ tryCatch(checkEquals(hw6$fpr.t1, fpr(0.5, hw6$tpr.pr, hw6$tpr.tr)),
 # fprs = the false positive rates over your threshold grid
 
 plotROC <- function(predicted, truth, add=F, ...) {
-
-    # your code here
+	ans <- list(sapply(seq(0,1,.01),function(x) tpr(x,predicted,truth)),sapply(seq(0,1,.01),function(x) fpr(x,predicted,truth)))
+	names(ans) <- c('tprs','fprs')
+	if(!add){
+		plot(ans$fprs,ans$tprs,main = 'ROC curve',xlab = 'fpr',ylab = 'tpr',xlim = c(0,1),ylim = c(0,1),type ='l')
+		abline(0,1,lty = 2)}
+	else{
+		lines(ans$fprs,ans$tprs,type = 'l')
+	}
+	return(ans)		
 }
 
 tryCatch(checkEquals(hw6$plotROC.t1, plotROC(hw6$tpr.pr, hw6$tpr.tr)),
@@ -110,7 +115,8 @@ library(rpart)
 library(randomForest)
 spam <- list()
 spam$data <- read.csv('spam-data.csv', header=F)
-
+spam$data$V58 <-factor(spam$data$V58)
+colnames(spam$data)[colnames(spam$data) == 'V58'] <- 'spam'
 
 # Before running a classifier, please split your data into training and test
 # sets. To do this, randomly sample 3,500 observtions from your dataset using
@@ -118,7 +124,9 @@ spam$data <- read.csv('spam-data.csv', header=F)
 # "spam". Store the remaining observations as the element "test" in the list
 # "spam".
 # ***Make sure to set your seed to 47 before sampling***
-
+set.seed(47)
+spam$train <- spam$data[sample(nrow(spam$data), 3500), ]
+spam$test <- spam$train[-as.numeric(rownames(spam$train)),]
 
 # fit a recursive partitioning classifier and a random forest classifier to your
 # training data. Use these to predict the probability that each observation is a
@@ -128,7 +136,9 @@ spam$data <- read.csv('spam-data.csv', header=F)
 # argument of randomForest to 250, but do not change any of the other model
 # parameters.  *** Make sure to set your seed to 47 before fitting your
 # models***
-
+set.seed(47)
+pred.rf <- randomForest(spam ~ .,spam$train,ntree = 250)
+pred.rp <- rpart(spam ~ ., spam$train)
 
 # Evaluate your two models using your plotROC function. Store the outputs as
 # <rp.output> and <rf.output> respectively. Please plot the ROC curves in the
@@ -137,6 +147,9 @@ spam$data <- read.csv('spam-data.csv', header=F)
 # wrote your plotROC function.
 # Add a legend in the bottom right indicating the the model that each curve represents.
 
+rp.output <- plotROC(pred.rp$predicted,as.numeric(spam$train$spam))
+rf.output <- plotROC(pred.rf$predicted,as.numeric(spam$train$spam))
+legend('bottomright',col = c('red','black'),legend = c('recursive partitioning classifier','random forest classifier'))
 # In the spam scenario, a true positive represents classifying spam email correctly
 # while a false positive represents classifying a good email as spam. For each
 # of the models, what is the lowest we can make fpr while still catching all
@@ -157,7 +170,13 @@ spam$data <- read.csv('spam-data.csv', header=F)
 # <fpr> are not the same length.
 
 constrainedFPR <- function(tpr, fpr, tpr.constraint) {
-
+	if (length(tpr) != length(fpr)){
+		stop('unequal input lengths')}
+	mini <- max(fpr)
+	for(i in 1:length(tpr)){
+		if(tpr[i] >= tpr.constraint){
+			mini <- min(mini,fpr[i])}}
+	return(mini)
     # your code here
 }
 
@@ -175,4 +194,5 @@ tryCatch(checkEquals(hw6$constrainedFPR.t1, constrainedFPR(hw6$plotROC.t1$tprs,
 # an email as being spam to achieve a tpr of 0.95 and fprs of <min.fpr.rp> and
 # <min.fpr.rf>? Use the same grid of probabilities as in your plotROC function
 # and store these values as <rp.threshold>.
-
+min.fpr.rp <-constrainedFPR(rp.output,pred.rp,.95)
+min.fpr.rf <-constrainedFPR(rf.output,pred.rf,.95) 
