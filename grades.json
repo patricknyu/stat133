@@ -223,5 +223,6 @@
     "login": "patricknyu", 
     "name": "Patrick Yu", 
     "status": "enrolled", 
-    "url": "git@github.com:patricknyu/stat133.git"
+    "url": "git@github.com:patricknyu/stat133.git", 
+    "type": "students"
 }
