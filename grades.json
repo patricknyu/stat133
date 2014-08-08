@@ -218,6 +218,23 @@
             }, 
             "penalty": 0, 
             "possible": 30
+        }, 
+        "hw5": {
+            "note": "", 
+            "hash": "2f88dbd4ef7258fcec2739fa2751bf32912cd95d", 
+            "earned": 22, 
+            "possible": 30, 
+            "penalty": 0, 
+            "parts": {
+                "ex1_fig": {
+                    "possible": 10, 
+                    "earned": 8
+                }, 
+                "ex1": {
+                    "possible": 20, 
+                    "earned": 14
+                }
+            }
         }
     }, 
     "login": "patricknyu", 
