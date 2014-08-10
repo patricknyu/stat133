@@ -265,6 +265,19 @@
                     "earned": 28
                 }
             }
+        }, 
+        "lab8": {
+            "note": "", 
+            "hash": "ce44e0a09dbbfbb0c969e02cf17cb4b69140ef24", 
+            "earned": 26, 
+            "possible": 30, 
+            "penalty": 0, 
+            "parts": {
+                "ex1": {
+                    "possible": 30, 
+                    "earned": 26
+                }
+            }
         }
     }, 
     "login": "patricknyu", 
