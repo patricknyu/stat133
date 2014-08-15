@@ -295,6 +295,23 @@
                     "earned": 12
                 }
             }
+        }, 
+        "hw8": {
+            "note": "", 
+            "hash": "f0c6f12674aaa527b83d870251a0b9ce337dd2b0", 
+            "earned": 28, 
+            "possible": 30, 
+            "penalty": 0, 
+            "parts": {
+                "ex1_fig": {
+                    "possible": 4, 
+                    "earned": 4
+                }, 
+                "ex1": {
+                    "possible": 26, 
+                    "earned": 24
+                }
+            }
         }
     }, 
     "login": "patricknyu", 
